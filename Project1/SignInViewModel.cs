@@ -13,6 +13,7 @@ namespace KMA.Group2.Project1
         private string _password;
         private string _login;
         private RelayCommand _signInCommand;
+        private RelayCommand _signUpCommand;
         private Action<bool> _showLoaderAction;
         private readonly Action _closeAction;
 
@@ -52,13 +53,29 @@ namespace KMA.Group2.Project1
             }
         }
 
+        public RelayCommand SignUpCommand
+        {
+            get
+            {
+                return _signUpCommand ?? (_signUpCommand = new RelayCommand(SignUpImpl));
+                
+            }
+        }
+
+        private void SignUpImpl(object obj)
+        {
+            var window = new Window();
+            window.Content = new SignUpView();
+            window.ShowDialog();
+        }
+
         private async void SignInImpl(object o)
         {
             _showLoaderAction.Invoke(true);
             await Task.Run((() =>
             {
                 StationManager.CurrentUser = DBAdapter.SignIn(_login, _password);
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
             }));
             if (StationManager.CurrentUser == null)
                 MessageBox.Show($"Login {_login} or password are invalid.");
