@@ -38,6 +38,6 @@
             <DatePicker SelectedDate="{Binding DateOfBirth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
         </StackPanel>
         <Button Content="Sign up" Grid.Row="12" Grid.Column="0" Margin="5" Name="BSignUp" Command="{Binding SignUpCommand}"/>
-        <Button Content="Cancel" Grid.Row="12" Grid.Column="1" Margin="5" Name="BCancel"/>
+        <Button Content="Cancel" Grid.Row="12" Grid.Column="1" Margin="5" Name="BCancel" Command="{Binding CancelCommand}"/>
     </Grid>
 </UserControl>

@@ -14,13 +14,21 @@ namespace KMA.Group2.Project1
         private string _login;
         private RelayCommand _signInCommand;
         private RelayCommand _signUpCommand;
+        private RelayCommand _closeCommand;
         private Action<bool> _showLoaderAction;
+        private readonly Action _signInSuccessAction;
+        private readonly Action _showSignUpAction;
         private readonly Action _closeAction;
 
-        public SignInViewModel(Action close, Action<bool> showLoader)
+        public SignInViewModel(Action signInSuccessAction,
+            Action showSignUpAction,
+            Action closeAction,
+            Action<bool> showLoaderAction)
         {
-            _closeAction = close;
-            _showLoaderAction = showLoader;
+            _closeAction = closeAction;
+            _showLoaderAction = showLoaderAction;
+            _signInSuccessAction = signInSuccessAction;
+            _showSignUpAction = showSignUpAction;
         }
 
         public string Login
@@ -55,18 +63,12 @@ namespace KMA.Group2.Project1
 
         public RelayCommand SignUpCommand
         {
-            get
-            {
-                return _signUpCommand ?? (_signUpCommand = new RelayCommand(SignUpImpl));
-                
-            }
+            get { return _signUpCommand ?? (_signUpCommand = new RelayCommand(o => _showSignUpAction.Invoke())); }
         }
 
-        private void SignUpImpl(object obj)
+        public RelayCommand CloseCommand
         {
-            var window = new Window();
-            window.Content = new SignUpView();
-            window.ShowDialog();
+            get { return _closeCommand ?? (_closeCommand = new RelayCommand(o => _closeAction.Invoke())); }
         }
 
         private async void SignInImpl(object o)
@@ -82,7 +84,7 @@ namespace KMA.Group2.Project1
             else
             {
                 MessageBox.Show("Successfully log in");
-                _closeAction.Invoke();
+                _signInSuccessAction.Invoke();
             }
             _showLoaderAction.Invoke(false);
         }

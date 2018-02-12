@@ -18,21 +18,17 @@ namespace KMA.Group2.Project1
     /// <summary>
     /// Interaction logic for SignInWindow.xaml
     /// </summary>
-    public partial class SignInWindow : Window
+    public partial class SignInWindow : UserControl
     {
-        private ImageAwesome _loader;
 
-        public SignInWindow()
+        public SignInWindow(Action signInSuccessAction,
+            Action showSignUpAction,
+            Action closeAction,
+            Action<bool> showLoaderAction)
         {
             InitializeComponent();
-            DataContext = new SignInViewModel(Close, ShowLoader);
+            DataContext = new SignInViewModel(signInSuccessAction, showSignUpAction
+                , closeAction, showLoaderAction);
         }
-
-        public void ShowLoader(bool isShow)
-        {
-            LoaderHelper.OnRequestLoader(MainGrid, ref _loader, isShow);
-        }
-
-
     }
 }

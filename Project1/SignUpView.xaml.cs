@@ -21,22 +21,12 @@ namespace KMA.Group2.Project1
     /// </summary>
     public partial class SignUpView : UserControl
     {
-        private ImageAwesome _loader;
-
-        public SignUpView()
+        public SignUpView(Action signUpSuccessAction,
+            Action cancelAction,
+            Action<bool> showLoaderAction)
         {
             InitializeComponent();
-            DataContext = new SignUpViewModel(Close, ShowLoader);
-        }
-
-        private void Close()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ShowLoader(bool isShow)
-        {
-            LoaderHelper.OnRequestLoader(MainGrid, ref _loader, isShow);
+            DataContext = new SignUpViewModel(signUpSuccessAction, cancelAction, showLoaderAction);
         }
     }
 }

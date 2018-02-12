@@ -17,13 +17,18 @@ namespace KMA.Group2.Project1
         private string _email;
         private DateTime _dateOfBirth;
         private RelayCommand _signUpCommand;
+        private RelayCommand _cancelCommand;
         private Action<bool> _showLoaderAction;
-        private readonly Action _closeAction;
+        private readonly Action _cancelAction;
+        private readonly Action _signUpSuccessAction;
 
-        public SignUpViewModel(Action close, Action<bool> showLoader)
+        public SignUpViewModel(Action signUpSuccessAction,
+            Action cancelAction,
+            Action<bool> showLoaderAction)
         {
-            _closeAction = close;
-            _showLoaderAction = showLoader;
+            _cancelAction = cancelAction;
+            _showLoaderAction = showLoaderAction;
+            _signUpSuccessAction = signUpSuccessAction;
         }
 
         public string Login
@@ -101,6 +106,11 @@ namespace KMA.Group2.Project1
             }
         }
 
+        public RelayCommand CancelCommand
+        {
+            get { return _cancelCommand ?? (_cancelCommand = new RelayCommand(o => _cancelAction.Invoke())); }
+        }
+
         private async void SignUpImpl(object o)
         {
             _showLoaderAction.Invoke(true);
@@ -109,6 +119,11 @@ namespace KMA.Group2.Project1
                 StationManager.CurrentUser = DBAdapter.SignUp(_login, _password, _firstName, _lastName, _email, _dateOfBirth);
                 Thread.Sleep(2000);
             }));
+
+            if (StationManager.CurrentUser != null)
+            {
+                _signUpSuccessAction.Invoke();
+            }
             
             _showLoaderAction.Invoke(false);
         }

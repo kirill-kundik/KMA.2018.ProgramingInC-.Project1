@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace KMA.Group2.Project1
 {
@@ -12,7 +14,24 @@ namespace KMA.Group2.Project1
 
         static DBAdapter()
         {
-            Users = new List<User> {new User("1", "1", "One", "LOne", "one@1.com", DateTime.Today), new User("2", "2", "Two", "LTwo", "two@2.com", DateTime.Today), new User("3", "3", "Three", "LThree", "three@3.com", DateTime.Today) };
+            var filepath = Path.Combine(GetAndCreateDataPath(), User.filename);
+            if (File.Exists(filepath))
+            {
+                try
+                {
+                    Users = SerializeHelper.Deserialize<List<User>>(filepath);
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to get users from file.{Environment.NewLine}{ex.Message}");
+                    throw;
+                }
+            }
+            else
+            {
+                Users = new List<User>();
+            }
         }
 
         internal static User SignIn(string login, string password)
@@ -28,6 +47,21 @@ namespace KMA.Group2.Project1
              User newUser = new User(login, password, firstName, lastName, email, dateOfBirth);
             Users.Add(newUser);
             return newUser;
+        }
+
+        internal static void SaveData()
+        {
+            SerializeHelper.Serialize(Users, Path.Combine(GetAndCreateDataPath(), User.filename));
+        }
+
+        private static string GetAndCreateDataPath()
+        {
+            string dir = StationManager.WorkingDirectory;
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            return dir;
         }
     }
 }
