@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using FontAwesome.WPF;
 
 namespace KMA.Group2.Project1
@@ -12,6 +13,7 @@ namespace KMA.Group2.Project1
         private SignInWindow _signInView;
         private SignUpView _signUpView;
         private ImageAwesome _loader;
+        private UserListView _userListView;
         public MainWindow()
         {
             InitializeComponent();
@@ -20,38 +22,60 @@ namespace KMA.Group2.Project1
 
         private void ShowSignInView()
         {
-            Grid.Children.Clear();
+            HamburgerButtonGrid.Visibility = Visibility.Collapsed;
+
             if (_signInView == null)
             {
-                _signInView = new SignInWindow(ShowMainView,ShowSignUpView, Close, ShowLoader);
+                _signInView = new SignInWindow(ShowMainView, ShowSignUpView, Close, ShowLoader);
             }
-            Grid.Children.Add(_signInView);
+
+            ShowView(_signInView);
         }
 
         private void ShowSignUpView()
         {
-            Grid.Children.Clear();
+
             if (_signUpView == null)
             {
                 _signUpView = new SignUpView(ShowMainView, ShowSignInView, ShowLoader);
             }
-            Grid.Children.Add(_signUpView);
+
+            ShowView(_signUpView);
         }
 
         private void ShowMainView()
         {
-            Grid.Children.Clear();
+            HamburgerButtonGrid.Visibility = Visibility.Visible;
+
+            if (_userListView == null)
+            {
+                _userListView = new UserListView();
+            }
+            ShowView(_userListView);
+        }
+
+        private void ShowView(UIElement element)
+        {
+            MainGrid.Children.Clear();    
+            MainGrid.Children.Add(element);
         }
 
         public void ShowLoader(bool isShow)
         {
-            LoaderHelper.OnRequestLoader(Grid, ref _loader, isShow);
+            LoaderHelper.OnRequestLoader(MainGrid, ref _loader, isShow);
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             DBAdapter.SaveData();
             base.OnClosing(e);
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            ExpandedGrid.Visibility = ExpandedGrid.Visibility == Visibility.Collapsed
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
     }
 }
