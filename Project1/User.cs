@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace KMA.Group2.Project1
 {
+    [Serializable]
     class User
     {
+        internal const string filename = "Users.dat";
         private string _login;
         private string _password;
         private string _firstName;
         private string _lastName;
         private string _email;
         private DateTime _dateOfBirth;
-
         public string Login 
         {
             get { return _login; }

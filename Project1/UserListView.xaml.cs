@@ -12,21 +12,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using FontAwesome.WPF;
 
 namespace KMA.Group2.Project1
 {
     /// <summary>
-    /// Interaction logic for SignUpView.xaml
+    /// Interaction logic for UserListView.xaml
     /// </summary>
-    public partial class SignUpView : UserControl
+    public partial class UserListView : UserControl
     {
-        public SignUpView(Action signUpSuccessAction,
-            Action cancelAction,
-            Action<bool> showLoaderAction)
+        public UserListView()
         {
             InitializeComponent();
-            DataContext = new SignUpViewModel(signUpSuccessAction, cancelAction, showLoaderAction);
+            DataContext = new UserListViewModel();
         }
     }
 }

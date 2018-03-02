@@ -5,8 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Project1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" MinHeight="350" MinWidth="525">
     <Grid>
-        
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Column="0" Name="HamburgerButtonGrid" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Content="..." FontSize="36" Click="ButtonBase_OnClick"></Button>
+            <Grid Row="1" Name="ExpandedGrid" Visibility="Collapsed">
+                <Button Content="Log out" FontSize="36"></Button>
+            </Grid>
+        </Grid>
+        <Grid Column="1" Name="MainGrid">
+            
+        </Grid>
     </Grid>
 </Window>
